@@ -2,7 +2,7 @@
 
 ## Folder Structure:
 
-chrome-extension/
+<pre>chrome-extension/
 │
 ├── dist/
 ├── public/
@@ -31,7 +31,6 @@ chrome-extension/
 ├── .gitignore
 ├── README.md
 └── package.json
-
 
 * **`src/`** : This is where all the source code lives. It contains subdirectories for background scripts, content scripts, popup UI, options page, and shared utilities.
 * **`background/`** : Contains scripts that handle background tasks such as event listeners, alarms, and interactions with Chrome APIs.
