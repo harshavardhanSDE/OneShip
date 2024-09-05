@@ -45,38 +45,54 @@ chrome-extension/
 
 ## Configuring ( vite.config.ts ) vite for React,
 
-```
-{
-  "manifest_version": 3,
-  "name": "My Chrome Extension",
-  "description": "An example Chrome extension.",
-  "version": "1.0.0",
-  "permissions": ["storage", "tabs"],
-  "action": {
-    "default_popup": "src/popup/popup.html",
-    "default_icon": "public/icon.png"
-  },
-  "background": {
-    "service_worker": "src/background/background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["src/content/content.js"]
-    }
-  ],
-  "options_page": "src/options/options.html",
-  "icons": {
-    "16": "public/icon.png",
-    "48": "public/icon.png",
-    "128": "public/icon.png"
-  }
-}
 
 ```
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
+
+export default defineConfig({
+  // Define multiple entry points for background, popup, and options
+  build: {
+    rollupOptions: {
+      input: {
+        background: resolve(__dirname, 'src/background/background.ts'),
+        content: resolve(__dirname, 'src/content/content.ts'),
+        popup: resolve(__dirname, 'src/popup/popup.tsx'),
+        options: resolve(__dirname, 'src/options/options.tsx'),
+      },
+      output: {
+        entryFileNames: '[name]/[name].js',
+        assetFileNames: 'assets/[name].[ext]',
+      },
+    },
+    outDir: 'dist',  // Output directory for the built files
+  },
+  plugins: [
+    react(),  // Enable React fast refresh
+  ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),  // Set up alias for `src/` directory
+    },
+  },
+  server: {
+    port: 3000,  // Vite development server port
+    open: false,  // Don't open the browser automatically
+    hmr: { overlay: true },  // Enable Hot Module Replacement
+  },
+})
+```
+
+
+
+* **Multiple Entry Points** : We have defined separate entry points for background scripts, content scripts, popup scripts, and options page scripts using Vite’s `rollupOptions.input`. Each of these entry points corresponds to a file in the `src/` folder.
+* **Output Structure** : The `entryFileNames` configuration ensures that each script is placed in its own directory under `dist/`. The assets like images, fonts, and CSS are placed in the `assets/` folder.
+* **React Fast Refresh** : The `react()` plugin enables fast refresh in React for a better development experience.
+* **Alias** : You can set up an alias like `@` to shorten your import paths from the `src/` directory. This improves code readability and makes imports more convenient.
+* **Server Configurations** : The `server` section configures Vite’s development server. It specifies the port, prevents automatic browser opening, and enables hot module replacement (HMR).
 
 ## Manifest.json
-
 
 Here’s a complete guide to the `manifest.json` file for Chrome extensions using Manifest Version 3 (MV3). The `manifest.json` is the central configuration file for a Chrome extension, specifying permissions, background scripts, content scripts, and more.
 
@@ -119,6 +135,8 @@ Here’s a complete guide to the `manifest.json` file for Chrome extensions usin
   ]
 }
 ```
+
+
 
 ### Key Components and Configurations
 
