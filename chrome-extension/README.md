@@ -443,3 +443,19 @@ Here’s a complete guide to the `manifest.json` file for Chrome extensions usin
 ```
 
 This guide covers the essential configurations for Manifest Version 3 for Chrome extensions.
+
+## Workflow:
+
+Create the folder structure and install the required packages,
+
+### JavaScript:
+
+```
+npm install react vite react-dom
+```
+
+### TypeScript
+
+```
+npm install typescript @types/react @types/react-dom
+```
